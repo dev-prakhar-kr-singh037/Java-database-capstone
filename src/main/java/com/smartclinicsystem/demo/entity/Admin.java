@@ -19,7 +19,7 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admin_id")
-    private int ID;
+    private Long adminid;
 
     @NotNull
     @Column(name = "username", nullable = false, unique = true)
@@ -56,13 +56,13 @@ public class Admin {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "patientid")
-    private Patients patient;
+    private Patient patient;
 
     public Admin() {
     }
 
-    public Admin(int ID, String username, String password, String firstname, String lastname, String email, int contact) {
-        this.ID = ID;
+    public Admin(Long adminid, String username, String password, String firstname, String lastname, String email, int contact) {
+        this.adminid = adminid;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -72,12 +72,12 @@ public class Admin {
         this.createdAt = LocalDate.now();
     }
 
-    public int getID() {
-        return ID;
+    public Long getAdminId() {
+        return adminid;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setAdminId(Long adminid) {
+        this.adminid = adminid;
     }
 
     public String getUsername() {
@@ -144,11 +144,11 @@ public class Admin {
         this.doctor = doctor;
     }
 
-    public Patients getPatient() {
+    public Patient getPatient() {
         return patient;
     }
 
-    public void setPatient(Patients patient) {
+    public void setPatient(Patient patient) {
         this.patient = patient;
     }
 }

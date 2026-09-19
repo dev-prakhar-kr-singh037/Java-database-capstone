@@ -1,17 +1,23 @@
 package com.smartclinicsystem.demo.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDate;
 
 @Entity
 public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int appointment_id;
+    private Long appointment_id;
 
     // Foreign key to Doctor
     @ManyToOne
@@ -21,7 +27,7 @@ public class Appointment {
     // Many appointments can belong to one patient
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
-    private Patients patient;
+    private Patient patient;
 
     // Appointment date & time
     @NotNull
@@ -37,7 +43,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int appointment_id, Doctor doctor, Patients patient, LocalDate appointmentTime, Integer status) {
+    public Appointment(Long appointment_id, Doctor doctor, Patient patient, LocalDate appointmentTime, Integer status) {
         this.appointment_id = appointment_id;
         this.doctor = doctor;
         this.patient = patient;
@@ -53,19 +59,19 @@ public class Appointment {
         this.doctor = doctor;
     }
 
-    public Patients getPatient() {
+    public Patient getPatient() {
         return patient;
     }
 
-    public void setPatient(Patients patient) {
+    public void setPatient(Patient patient) {
         this.patient = patient;
     }
 
-    public int getAppointment_id() {
+    public Long getAppointment_id() {
         return appointment_id;
     }
 
-    public void setAppointment_id(int appointment_id) {
+    public void setAppointment_id(Long appointment_id) {
         this.appointment_id = appointment_id;
     }
 

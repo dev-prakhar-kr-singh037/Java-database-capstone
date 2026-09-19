@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Patients {
+public class Patient {
     
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private Long patientid;
@@ -38,10 +38,10 @@ public class Patients {
     @NotNull
     private String address;
     
-    public Patients() {
+    public Patient() {
     }
     
-    public Patients(Long patientid, String firstname, String lastname, String dob, String gender, String phoneno, String email, LocalDate createdat, String address) {
+    public Patient(Long patientid, String firstname, String lastname, String dob, String gender, String phoneno, String email, LocalDate createdat, String address) {
         this.patientid = patientid;
         this.firstname = firstname;
         this.lastname = lastname;
