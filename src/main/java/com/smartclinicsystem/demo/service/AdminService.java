@@ -1,5 +1,6 @@
 package com.smartclinicsystem.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,4 +64,7 @@ public interface AdminService {
 
     // Convenience: create or update users (doctors/patients) via admin UI
     Admin createOrUpdateUser(Admin admin);
+
+    List<Appointment> findByDoctorIdAndAppointmentTime(Long doctorId, LocalDate appointmentTime);
+
 }

@@ -21,6 +21,7 @@ import com.smartclinicsystem.demo.repository.PatientRepository;
 import com.smartclinicsystem.demo.repository.PrescriptionRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -179,14 +180,33 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public void resolveAppointmentConflict(Long appointmentId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new EntityNotFoundException("Appointment not found: " + appointmentId));
-        if (appointment.getStatus() == null || appointment.getStatus() == 2) {
-            appointment.setStatus(0);
+
+        if (appointment.getDoctor() == null || appointment.getDoctor().getDoctorid() == null) {
+            throw new IllegalStateException("Appointment is missing a doctor reference.");
         }
-        appointmentRepository.save(appointment);
+
+        // Find other appointments with same doctor & time
+        List<Appointment> conflicts = appointmentRepository
+                .findByDoctor_DoctoridAndAppointmentTime(appointment.getDoctor().getDoctorid(), appointment.getAppointmentTime());
+
+        if (conflicts.size() > 1) {
+            // Example strategy: cancel all but the first
+            for (int i = 1; i < conflicts.size(); i++) {
+                conflicts.get(i).setStatus(2); // cancelled
+                appointmentRepository.save(conflicts.get(i));
+            }
+        }
     }
+
+    @Override
+    public List<Appointment> findByDoctorIdAndAppointmentTime(Long doctorId, LocalDate appointmentTime) {
+        return appointmentRepository.findByDoctor_DoctoridAndAppointmentTime(doctorId, appointmentTime);
+    }
+
 
     // Prescription oversight
     @Override

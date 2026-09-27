@@ -1,11 +1,13 @@
 package com.smartclinicsystem.demo.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
@@ -31,6 +33,13 @@ public class Doctor {
     private String email;
 
     private LocalDate createdat;
+
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointments;
+
+    
+
 
     public Doctor() {
     }
