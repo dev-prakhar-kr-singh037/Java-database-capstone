@@ -1,13 +1,15 @@
 package com.smartclinicsystem.demo.service;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.smartclinicsystem.demo.document.Prescription;
+import com.smartclinicsystem.demo.entity.Appointment;
 import com.smartclinicsystem.demo.entity.Patient;
+import com.smartclinicsystem.demo.repository.AppointmentRepository;
 import com.smartclinicsystem.demo.repository.PatientRepository;
+import com.smartclinicsystem.demo.repository.PrescriptionRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -15,27 +17,15 @@ import jakarta.persistence.EntityNotFoundException;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final PrescriptionRepository prescriptionRepository;
+    private final AppointmentRepository appointmentRepository;
 
-    public PatientServiceImpl(PatientRepository patientRepository) {
+    public PatientServiceImpl(PatientRepository patientRepository,
+                              PrescriptionRepository prescriptionRepository,
+                              AppointmentRepository appointmentRepository) {
         this.patientRepository = patientRepository;
-    }
-
-    @Override
-    public Patient createPatient(Patient patient) {
-        if (patient.getCreatedat() == null) {
-            patient.setCreatedat(LocalDate.now());
-        }
-        return patientRepository.save(patient);
-    }
-
-    @Override
-    public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
-    }
-
-    @Override
-    public Optional<Patient> getPatientById(Long patientId) {
-        return patientRepository.findById(patientId);
+        this.prescriptionRepository = prescriptionRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
     @Override
@@ -59,5 +49,15 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found: " + patientId));
         patientRepository.delete(patient);
+    }
+
+    @Override
+    public List<Prescription> viewPrescriptionsByPatient(String patientId) {
+        return prescriptionRepository.findByPatientId(patientId);
+    }
+
+    @Override
+    public List<Appointment> viewAppointmentsByPatient(Long patientId) {
+        return appointmentRepository.findByPatient_Patientid(patientId);
     }
 }

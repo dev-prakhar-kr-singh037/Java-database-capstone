@@ -1,44 +1,38 @@
 package com.smartclinicsystem.demo.service;
 
-import com.smartclinicsystem.demo.entity.Doctor;
-import com.smartclinicsystem.demo.repository.DoctorRepository;
-
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.smartclinicsystem.demo.document.Prescription;
+import com.smartclinicsystem.demo.entity.Appointment;
+import com.smartclinicsystem.demo.entity.Doctor;
+import com.smartclinicsystem.demo.repository.AppointmentRepository;
+import com.smartclinicsystem.demo.repository.DoctorRepository;
+import com.smartclinicsystem.demo.repository.PrescriptionRepository;
+
 import jakarta.persistence.EntityNotFoundException;
 
-public class DoctorServiceImpl implements DoctorService{
+@Service
+public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
+    private final PrescriptionRepository prescriptionRepository;
+    private final AppointmentRepository appointmentRepository;
 
-    public DoctorServiceImpl(DoctorRepository doctorRepository){
-        this.doctorRepository=doctorRepository;
+    public DoctorServiceImpl(DoctorRepository doctorRepository,
+                             PrescriptionRepository prescriptionRepository,
+                             AppointmentRepository appointmentRepository) {
+        this.doctorRepository = doctorRepository;
+        this.prescriptionRepository = prescriptionRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
     @Override
-    public Doctor createDoctor(Doctor doctor){
-        if (doctor.getCreatedat() == null) {
-            doctor.setCreatedat(LocalDate.now());
-        }
-        return doctorRepository.save(doctor);
-    
-    }
-
-    @Override
-    public List<Doctor> getAllDoctors(){
-        return doctorRepository.findAll();
-    }
-
-    @Override
-	public Optional<Doctor> getDoctorById(Long doctorId){
-        return doctorRepository.findById(doctorId);
-    }
-
-    @Override 
-	public Doctor updateDoctor(Long doctorid, Doctor updatedDoctor){
-        Doctor doctor=doctorRepository.findById(doctorid)
-                .orElseThrow(() -> new EntityNotFoundException("Doctor not found: "+doctorid));
+    public Doctor updateDoctor(Long doctorid, Doctor updatedDoctor) {
+        Doctor doctor = doctorRepository.findById(doctorid)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found: " + doctorid));
         doctor.setFirstname(updatedDoctor.getFirstname());
         doctor.setLastname(updatedDoctor.getLastname());
         doctor.setSpecialisation(updatedDoctor.getSpecialisation());
@@ -47,15 +41,31 @@ public class DoctorServiceImpl implements DoctorService{
 
         return doctorRepository.save(doctor);
     }
-        
-    
+
     @Override
-	public void deleteDoctor(Long doctorId){
-        Doctor doctor=doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new EntityNotFoundException("Doctor not found: " + doctorId));
-        doctorRepository.delete(doctor);
+    public Prescription writePrescription(Prescription prescription) {
+        if (prescription == null) {
+            throw new IllegalArgumentException("Prescription cannot be null.");
+        }
+        if (prescription.getNotes() == null || prescription.getNotes().isBlank()) {
+            throw new IllegalArgumentException("Prescription notes are required.");
+        }
+        if (prescription.getCreatedAt() == null) {
+            prescription.setCreatedAt(LocalDate.now());
+        }
+        if (prescription.getIssuedDate() == null) {
+            prescription.setIssuedDate(LocalDate.now());
+        }
+        return prescriptionRepository.save(prescription);
+    }
+
+    @Override
+    public List<Prescription> viewPrescriptionsByDoctor(String doctorId) {
+        return prescriptionRepository.findByDoctorId(doctorId);
+    }
+
+    @Override
+    public List<Appointment> viewAppointmentsByDoctor(Long doctorId) {
+        return appointmentRepository.findByDoctor_Doctorid(doctorId);
     }
 }
-
-    
-

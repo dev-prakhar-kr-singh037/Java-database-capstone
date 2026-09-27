@@ -1,11 +1,12 @@
 package com.smartclinicsystem.demo.document;
 
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotNull;
 
 @Document(collection = "prescription")
 public class Prescription {
@@ -30,6 +31,7 @@ public class Prescription {
     @Field("issued_date")
     private LocalDate issuedDate;
 
+    @NotNull(message = "Prescription notes are required")
     @Field("notes")
     private String notes;
 

@@ -1,19 +1,21 @@
 package com.smartclinicsystem.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.smartclinicsystem.demo.document.Prescription;
+import com.smartclinicsystem.demo.entity.Appointment;
 import com.smartclinicsystem.demo.entity.Patient;
 
 public interface PatientService {
 
-	Patient createPatient(Patient patient);
+    // Patient account update & self-delete remain here
+    Patient updatePatient(Long patientId, Patient updatedPatient);
 
-	List<Patient> getAllPatients();
+    void deletePatient(Long patientId);
 
-	Optional<Patient> getPatientById(Long patientId);
+    // Patient can view their own prescriptions (read-only)
+    List<Prescription> viewPrescriptionsByPatient(String patientId);
 
-	Patient updatePatient(Long patientId, Patient updatedPatient);
-
-	void deletePatient(Long patientId);
+    // Patient can view their appointments
+    List<Appointment> viewAppointmentsByPatient(Long patientId);
 }

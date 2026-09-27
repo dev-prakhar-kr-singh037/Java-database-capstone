@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.smartclinicsystem.demo.entity.Appointment;
 
-public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    Optional<Appointment> findByAppointment_id(int appointmentId);
+    Optional<Appointment> findByAppointment_id(Long appointmentId);
 
     List<Appointment> findByPatient_Patientid(Long patientId);
 
