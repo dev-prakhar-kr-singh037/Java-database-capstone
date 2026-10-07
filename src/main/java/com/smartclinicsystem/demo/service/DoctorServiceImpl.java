@@ -13,6 +13,7 @@ import com.smartclinicsystem.demo.repository.DoctorRepository;
 import com.smartclinicsystem.demo.repository.PrescriptionRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -20,13 +21,16 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final PrescriptionRepository prescriptionRepository;
     private final AppointmentRepository appointmentRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DoctorServiceImpl(DoctorRepository doctorRepository,
                              PrescriptionRepository prescriptionRepository,
-                             AppointmentRepository appointmentRepository) {
+                             AppointmentRepository appointmentRepository,
+                             PasswordEncoder passwordEncoder) {
         this.doctorRepository = doctorRepository;
         this.prescriptionRepository = prescriptionRepository;
         this.appointmentRepository = appointmentRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,6 +39,9 @@ public class DoctorServiceImpl implements DoctorService {
                 .orElseThrow(() -> new EntityNotFoundException("Doctor not found: " + doctorid));
         doctor.setFirstname(updatedDoctor.getFirstname());
         doctor.setLastname(updatedDoctor.getLastname());
+        if (updatedDoctor.getPassword() != null && !updatedDoctor.getPassword().isBlank()) {
+            doctor.setPassword(passwordEncoder.encode(updatedDoctor.getPassword()));
+        }
         doctor.setSpecialisation(updatedDoctor.getSpecialisation());
         doctor.setContact(updatedDoctor.getContact());
         doctor.setEmail(updatedDoctor.getEmail());

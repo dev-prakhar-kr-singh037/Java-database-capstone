@@ -19,6 +19,7 @@ import com.smartclinicsystem.demo.repository.AppointmentRepository;
 import com.smartclinicsystem.demo.repository.DoctorRepository;
 import com.smartclinicsystem.demo.repository.PatientRepository;
 import com.smartclinicsystem.demo.repository.PrescriptionRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -31,21 +32,25 @@ public class AdminServiceImpl implements AdminService {
     private final PrescriptionRepository prescriptionRepository;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AdminServiceImpl(AdminRepository adminRepository,
                            AppointmentRepository appointmentRepository,
                            PrescriptionRepository prescriptionRepository,
                            DoctorRepository doctorRepository,
-                           PatientRepository patientRepository) {
+                           PatientRepository patientRepository,
+                           PasswordEncoder passwordEncoder) {
         this.adminRepository = adminRepository;
         this.appointmentRepository = appointmentRepository;
         this.prescriptionRepository = prescriptionRepository;
         this.doctorRepository = doctorRepository;
         this.patientRepository = patientRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Admin createAdmin(Admin admin) {
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         if (admin.getCreatedAt() == null) {
             admin.setCreatedAt(LocalDate.now());
         }
@@ -68,7 +73,9 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new EntityNotFoundException("Admin not found: " + adminId));
 
         admin.setUsername(updatedAdmin.getUsername());
-        admin.setPassword(updatedAdmin.getPassword());
+        if (updatedAdmin.getPassword() != null && !updatedAdmin.getPassword().isBlank()) {
+            admin.setPassword(passwordEncoder.encode(updatedAdmin.getPassword()));
+        }
         admin.setFirstname(updatedAdmin.getFirstname());
         admin.setLastname(updatedAdmin.getLastname());
         admin.setEmail(updatedAdmin.getEmail());
@@ -87,6 +94,7 @@ public class AdminServiceImpl implements AdminService {
     // Doctor management (admin responsibility)
     @Override
     public Doctor createDoctor(Doctor doctor) {
+        doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
         if (doctor.getCreatedat() == null) {
             doctor.setCreatedat(LocalDate.now());
         }
@@ -100,6 +108,9 @@ public class AdminServiceImpl implements AdminService {
 
         doctor.setFirstname(updatedDoctor.getFirstname());
         doctor.setLastname(updatedDoctor.getLastname());
+        if (updatedDoctor.getPassword() != null && !updatedDoctor.getPassword().isBlank()) {
+            doctor.setPassword(passwordEncoder.encode(updatedDoctor.getPassword()));
+        }
         doctor.setSpecialisation(updatedDoctor.getSpecialisation());
         doctor.setContact(updatedDoctor.getContact());
         doctor.setEmail(updatedDoctor.getEmail());
@@ -122,6 +133,7 @@ public class AdminServiceImpl implements AdminService {
     // Patient management (admin responsibility)
     @Override
     public Patient createPatient(Patient patient) {
+        patient.setPassword(passwordEncoder.encode(patient.getPassword()));
         if (patient.getCreatedat() == null) {
             patient.setCreatedat(LocalDate.now());
         }
@@ -135,6 +147,9 @@ public class AdminServiceImpl implements AdminService {
 
         patient.setFirstname(updatedPatient.getFirstname());
         patient.setLastname(updatedPatient.getLastname());
+        if (updatedPatient.getPassword() != null && !updatedPatient.getPassword().isBlank()) {
+            patient.setPassword(passwordEncoder.encode(updatedPatient.getPassword()));
+        }
         patient.setDob(updatedPatient.getDob());
         patient.setGender(updatedPatient.getGender());
         patient.setPhoneno(updatedPatient.getPhoneno());

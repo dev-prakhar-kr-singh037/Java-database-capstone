@@ -6,6 +6,7 @@ DOCTOR USER STORY
 
 3.As a doctor, I want to set and modify my available working hours and block out personal time so that my daily schedule avoids double-bookings.
 
+
 PATIENT USER STORY
 
 1.As a patient, I want to view and download my current and past prescriptions from my dashboard so that I can easily buy medications or reference past treatments.
@@ -13,6 +14,7 @@ PATIENT USER STORY
 2.As a patient, I want to access my lab results and consultation summaries online so that I can track my overall health progress.
 
 3.As a patient, I want to view available doctor time slots and book an appointment online so that I can schedule visits without calling the clinic.
+
 
 ADMIN USER STORY
 

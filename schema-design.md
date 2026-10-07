@@ -68,6 +68,7 @@ CREATE TABLE doctors (
     doctorid BIGINT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     specialisation VARCHAR(150) NOT NULL,
     contact INT NOT NULL,
     email VARCHAR(150),
@@ -79,6 +80,7 @@ CREATE TABLE patients (
     patientid BIGINT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     dob VARCHAR(50) NOT NULL,
     gender VARCHAR(20) NOT NULL,
     phoneno VARCHAR(20) NOT NULL,
@@ -187,6 +189,7 @@ db.prescription.createIndex({ "appointment_id": 1 });
 | `patientid` | `Long` / `@Id` | `patientid` | Primary Key |
 | `firstname` | `String` | `firstname` | Patient's first name |
 | `lastname` | `String` | `lastname` | Patient's last name |
+| `password` | `String` / `@NotNull` | `password` | Patient account password |
 | `dob` | `String` | `dob` | Date of birth |
 | `gender` | `String` | `gender` | Gender |
 | `phoneno` | `String` | `phoneno` | Phone contact |
@@ -201,6 +204,7 @@ db.prescription.createIndex({ "appointment_id": 1 });
 | `doctorid` | `Long` / `@Id` | `doctorid` | Primary Key |
 | `firstname` | `String` | `firstname` | Doctor's first name |
 | `lastname` | `String` | `lastname` | Doctor's last name |
+| `password` | `String` / `@NotNull` | `password` | Doctor account password |
 | `specialisation`| `String` | `specialisation`| Medical specialty |
 | `contact` | `int` | `contact` | Doctor phone contact |
 | `email` | `String` | `email` | Doctor email address |

@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,9 @@ public class Patient {
 
     @NotNull
     private String lastname;
+
+    @NotNull
+    private String password;
 
     @NotNull
     private String dob;
@@ -44,14 +48,18 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
 
+    @SuppressWarnings("unused")
+    @ManyToMany
+    private List<Doctor> doctors;
     
     public Patient() {
     }
     
-    public Patient(Long patientid, String firstname, String lastname, String dob, String gender, String phoneno, String email, LocalDate createdat, String address) {
+    public Patient(Long patientid, String firstname, String lastname,String password, String dob, String gender, String phoneno, String email, LocalDate createdat, String address) {
         this.patientid = patientid;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.password=password;
         this.dob = dob;
         this.gender = gender;
         this.phoneno = phoneno;
@@ -82,6 +90,14 @@ public class Patient {
     
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password=password;
     }
     
     public String getDob() {

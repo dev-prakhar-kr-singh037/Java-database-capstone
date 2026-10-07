@@ -24,6 +24,9 @@ public class Doctor {
     private String lastname;
 
     @NotNull
+    private String password;
+
+    @NotNull
     private String specialisation;
 
     @NotNull
@@ -44,10 +47,11 @@ public class Doctor {
     public Doctor() {
     }
 
-    public Doctor(Long doctorid, String firstname, String lastname, String specialisation, int contact, String email, LocalDate createdat) {
+    public Doctor(Long doctorid, String firstname, String lastname,String password, String specialisation, int contact, String email, LocalDate createdat) {
         this.doctorid = doctorid;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.password=password;
         this.specialisation = specialisation;
         this.contact = contact;
         this.email = email;
@@ -76,6 +80,14 @@ public class Doctor {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password=password;
     }
 
     public String getSpecialisation() {

@@ -14,13 +14,19 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     Optional<Doctor> findByDoctorid(Long doctorid);
 
+    Optional<Doctor> findByEmail(String email);
+
+    Optional<Doctor> findByEmailAndPassword(String email, String password);
+
     @Modifying
     @Transactional
     @Query("UPDATE Doctor d SET d.firstname = :firstname, d.lastname = :lastname, " +
-            "d.specialisation = :specialisation, d.contact = :contact, d.email = :email WHERE d.doctorid = :doctorid")
+            "d.password = :password, d.specialisation = :specialisation, d.contact = :contact, " +
+            "d.email = :email WHERE d.doctorid = :doctorid")
     int updateDoctorDetails(@Param("doctorid") Long doctorid,
                            @Param("firstname") String firstname,
                            @Param("lastname") String lastname,
+                           @Param("password") String password,
                            @Param("specialisation") String specialisation,
                            @Param("contact") int contact,
                            @Param("email") String email);
