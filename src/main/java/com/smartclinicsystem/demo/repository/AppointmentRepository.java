@@ -2,15 +2,12 @@ package com.smartclinicsystem.demo.repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.smartclinicsystem.demo.entity.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-
-    Optional<Appointment> findByAppointment_id(Long appointmentId);
 
     List<Appointment> findByPatient_Patientid(Long patientId);
 

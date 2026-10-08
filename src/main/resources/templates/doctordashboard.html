@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor Dashboard | Smart Clinic</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+<header>
+    <h1>Doctor dashboard</h1>
+    <p>Welcome, Dr. <span th:text="${doctor.firstname + ' ' + doctor.lastname}">Doctor name</span></p>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Log out</button>
+    </form>
+</header>
+<main>
+    <section aria-labelledby="profile-heading">
+        <h2 id="profile-heading">Your profile</h2>
+        <dl>
+            <dt>Email</dt><dd th:text="${doctor.email}">Email</dd>
+            <dt>Specialisation</dt><dd th:text="${doctor.specialisation}">Specialisation</dd>
+            <dt>Contact</dt><dd th:text="${doctor.contact}">Contact</dd>
+            <dt>Joined</dt><dd th:text="${doctor.createdat}">Date</dd>
+        </dl>
+    </section>
+
+    <section aria-labelledby="appointments-heading">
+        <h2 id="appointments-heading">Your appointments</h2>
+        <p th:if="${#lists.isEmpty(appointments)}">You have no appointments.</p>
+        <table th:unless="${#lists.isEmpty(appointments)}">
+            <thead><tr><th>Date</th><th>Patient</th><th>Email</th><th>Phone</th><th>Status</th></tr></thead>
+            <tbody>
+            <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.appointmentTime}">Date</td>
+                <td th:text="${appointment.patient.firstname + ' ' + appointment.patient.lastname}">Patient</td>
+                <td th:text="${appointment.patient.email}">Email</td>
+                <td th:text="${appointment.patient.phoneno}">Phone</td>
+                <td th:text="${appointment.status == 0 ? 'Scheduled' : (appointment.status == 1 ? 'Completed' : 'Cancelled')}">Status</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section aria-labelledby="prescriptions-heading">
+        <h2 id="prescriptions-heading">Your prescriptions</h2>
+        <p th:if="${#lists.isEmpty(prescriptions)}">You have not issued any prescriptions.</p>
+        <table th:unless="${#lists.isEmpty(prescriptions)}">
+            <thead><tr><th>Issued</th><th>Patient ID</th><th>Appointment ID</th><th>Notes</th></tr></thead>
+            <tbody>
+            <tr th:each="prescription : ${prescriptions}">
+                <td th:text="${prescription.issuedDate}">Date</td>
+                <td th:text="${prescription.patientId}">Patient ID</td>
+                <td th:text="${prescription.appointmentId}">Appointment ID</td>
+                <td th:text="${prescription.notes}">Notes</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.smartclinicsystem.demo.document.Prescription;
 import com.smartclinicsystem.demo.entity.Appointment;
+import com.smartclinicsystem.demo.entity.Doctor;
 import com.smartclinicsystem.demo.entity.Patient;
 import com.smartclinicsystem.demo.repository.AppointmentRepository;
+import com.smartclinicsystem.demo.repository.DoctorRepository;
 import com.smartclinicsystem.demo.repository.PatientRepository;
 import com.smartclinicsystem.demo.repository.PrescriptionRepository;
 
@@ -18,15 +20,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
     private final PrescriptionRepository prescriptionRepository;
     private final AppointmentRepository appointmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     public PatientServiceImpl(PatientRepository patientRepository,
+                              DoctorRepository doctorRepository,
                               PrescriptionRepository prescriptionRepository,
                               AppointmentRepository appointmentRepository,
                               PasswordEncoder passwordEncoder) {
         this.patientRepository = patientRepository;
+        this.doctorRepository = doctorRepository;
         this.prescriptionRepository = prescriptionRepository;
         this.appointmentRepository = appointmentRepository;
         this.passwordEncoder = passwordEncoder;
@@ -66,5 +71,13 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<Appointment> viewAppointmentsByPatient(Long patientId) {
         return appointmentRepository.findByPatient_Patientid(patientId);
+    }
+
+    @Override
+    public List<Doctor> searchDoctorsByName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Doctor name is required.");
+        }
+        return doctorRepository.searchByName(name.trim());
     }
 }

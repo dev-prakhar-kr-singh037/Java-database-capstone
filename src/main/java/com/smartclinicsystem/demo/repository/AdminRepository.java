@@ -25,8 +25,8 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Admin a SET a.username = :username, a.password = :password, a.firstname = :firstname, " +
-            "a.lastname = :lastname, a.email = :email, a.contact = :contact WHERE a.adminId = :adminId")
-    int updateAdminDetails(@Param("adminId") Long adminId,
+            "a.lastname = :lastname, a.email = :email, a.contact = :contact WHERE a.adminid = :adminid")
+    int updateAdminDetails(@Param("adminid") Long adminid,
                           @Param("username") String username,
                           @Param("password") String password,
                           @Param("firstname") String firstname,

@@ -1,5 +1,6 @@
 package com.smartclinicsystem.demo.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,12 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     Optional<Doctor> findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
     Optional<Doctor> findByEmailAndPassword(String email, String password);
+
+    @Query("SELECT d FROM Doctor d WHERE LOWER(CONCAT(d.firstname, ' ', d.lastname)) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Doctor> searchByName(@Param("name") String name);
 
     @Modifying
     @Transactional

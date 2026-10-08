@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.smartclinicsystem.demo.document.Prescription;
 import com.smartclinicsystem.demo.entity.Appointment;
+import com.smartclinicsystem.demo.entity.Doctor;
 import com.smartclinicsystem.demo.entity.Patient;
 
 public interface PatientService {
@@ -18,4 +19,6 @@ public interface PatientService {
 
     // Patient can view their appointments
     List<Appointment> viewAppointmentsByPatient(Long patientId);
+
+    List<Doctor> searchDoctorsByName(String name);
 }
